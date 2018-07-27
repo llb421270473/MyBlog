@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>SSR原理 | CalvinLee</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="在品味了各种前端框架所带来开发的效率提升时，我们又回到了传统HTML工作机制的讨论。 前端框架在开发SPA应用时，浏览器一开始只是加载了一个框架，在执行了app.js后才开始根据数据来构建DOM。 那么这时会出现一些新的问题  搜索引擎爬虫爬到的只是一个框架，它不会来渲染你的数据。（不能SEO） 浏览器加载的是一个框架，数据需要再次请求网络，首屏加载时间过长。（用户体验度低）  为了解决上面遇到的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSR原理">
+<meta property="og:url" content="http://coderdog.duapp.com/2017/09/07/SSR原理/index.html">
+<meta property="og:site_name" content="CalvinLee">
+<meta property="og:description" content="在品味了各种前端框架所带来开发的效率提升时，我们又回到了传统HTML工作机制的讨论。 前端框架在开发SPA应用时，浏览器一开始只是加载了一个框架，在执行了app.js后才开始根据数据来构建DOM。 那么这时会出现一些新的问题  搜索引擎爬虫爬到的只是一个框架，它不会来渲染你的数据。（不能SEO） 浏览器加载的是一个框架，数据需要再次请求网络，首屏加载时间过长。（用户体验度低）  为了解决上面遇到的">
+<meta property="og:image" content="http://otj0cetqv.bkt.clouddn.com/170907/zhuang_bi.png">
+<meta property="og:updated_time" content="2017-09-07T16:46:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SSR原理">
+<meta name="twitter:description" content="在品味了各种前端框架所带来开发的效率提升时，我们又回到了传统HTML工作机制的讨论。 前端框架在开发SPA应用时，浏览器一开始只是加载了一个框架，在执行了app.js后才开始根据数据来构建DOM。 那么这时会出现一些新的问题  搜索引擎爬虫爬到的只是一个框架，它不会来渲染你的数据。（不能SEO） 浏览器加载的是一个框架，数据需要再次请求网络，首屏加载时间过长。（用户体验度低）  为了解决上面遇到的">
+<meta name="twitter:image" content="http://otj0cetqv.bkt.clouddn.com/170907/zhuang_bi.png">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/MyBlog/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/MyBlog/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/MyBlog/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/MyBlog/css/style.css">
+
+    <script src="/MyBlog/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/MyBlog/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/MyBlog/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?56d1bd486ef71e9d4af8337b7ae3ee8d";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/MyBlog/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">CalvinLee</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/MyBlog/.">Home</a>
+                
+                    <a class="main-nav-link" href="/MyBlog/archives">Archives</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/MyBlog/css/images/avatar.jpg" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/MyBlog/',
+        CONTENT_URL: '/MyBlog/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/MyBlog/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/MyBlog/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/MyBlog/archives">Archives</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/MyBlog/css/images/avatar.jpg" />
+            <h2 id="name">Calvin Lee</h2>
+            <h3 id="title">Full-Stack Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>ShangHai, China</span>
+            <a id="follow" target="_blank" href="https://github.com/llb421270473">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                6
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                0
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/llb421270473" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/DeveloperLee" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-SSR原理" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            SSR原理
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/MyBlog/2017/09/07/SSR原理/">
+            <time datetime="2017-09-07T14:58:08.000Z" itemprop="datePublished">2017-09-07</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>在品味了各种前端框架所带来开发的效率提升时，我们又回到了传统HTML工作机制的讨论。</p>
+<p>前端框架在开发SPA应用时，浏览器一开始只是加载了一个框架，在执行了app.js后才开始根据数据来构建DOM。</p>
+<p>那么这时会出现一些新的问题</p>
+<ul>
+<li>搜索引擎爬虫爬到的只是一个框架，它不会来渲染你的数据。（不能SEO）</li>
+<li>浏览器加载的是一个框架，数据需要再次请求网络，首屏加载时间过长。（用户体验度低）</li>
+</ul>
+<p>为了解决上面遇到的问题，勤劳的工程师想出了一个解决方案，下满我来和大家分享下。</p>
+<p><img src="http://otj0cetqv.bkt.clouddn.com/170907/zhuang_bi.png" alt=""></p>
+<h2 id="Virtual-DOM"><a href="#Virtual-DOM" class="headerlink" title="Virtual DOM"></a>Virtual DOM</h2><p>Virtual DOM是React性能卓越的大杀器，那时其他框架还不具备VD人们也经常争论性能到底哪家强。</p>
+<p>框架将数据渲染为虚拟DOM，这时通过diff算法与真实DOM对比找出不同的之处，然后通过render函数维护DOM。</p>
+<p>说了这么多就是内存里存了个DOM结构。</p>
+<blockquote>
+<p>DOM本身是一种树型结构（Tree），虚拟DOM采用红黑树实现</p>
+</blockquote>
+<h2 id="状态机（Vuex、Redux）"><a href="#状态机（Vuex、Redux）" class="headerlink" title="状态机（Vuex、Redux）"></a>状态机（Vuex、Redux）</h2><p>前端数据持久化以及标准数据流，这个标准数据流在服务端渲染时起到了数据预加载的作用。<br>服务端渲染时会在组件实例上增加一个生命周期函数，这时只需要把对应的action写在函数里服务端就会加载数据。</p>
+<p>由于采用标准数据流，数据从getter里面取，服务端会自动把这些数据设置到render context中。</p>
+<p>数据拿到了可以渲染Virtual DOM了。</p>
+<h2 id="SSR"><a href="#SSR" class="headerlink" title="SSR"></a>SSR</h2><p>SSR(Server Side Render)服务器端渲染，Virtual DOM在不执行diff时render函数直接渲染，此时生成的DOM就是传统的HTML。<br>此时HTTP服务器将这个渲染好的HTML文本流返回浏览器，这时我们就又回到了传统的HTML。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>之所以最后才介绍主角（SSR），是因为这个解决方案的核心离不开Virtual DOM与状态机的标准数据流，目前主流前端框架均支持了SSR特性。</p>
+<blockquote>
+<p>如果没有Virtual DOM与状态机，那么这件事儿能解决不？答案是肯定的，想想e2e test。</p>
+</blockquote>
+<h2 id="下期预告"><a href="#下期预告" class="headerlink" title="下期预告"></a>下期预告</h2><p>SSR听着很过瘾，但是想自己搭建一套过过瘾却不知如何下手，下期就带大家一起搭建一套。</p>
+<blockquote>
+<p>怕麻烦，开箱即用的方案 <a href="https://nuxtjs.org/" target="_blank" rel="external">Nuxt</a></p>
+</blockquote>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+    <div class="jiathis_style">
+    <span class="jiathis_txt">分享到：</span>
+    <a class="jiathis_button_qzone">QQ空间</a>
+    <a class="jiathis_button_tsina">新浪微博</a>
+    <a class="jiathis_button_tqq">腾讯微博</a>
+    <a class="jiathis_button_weixin">微信</a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+    <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<style>
+    .jiathis_style div:first-child:not(.jiadiv_01) {
+        width: auto !important;
+        border: none !important;
+    }
+    .jiathis_style .jiadiv_01 {
+        margin: 10px 0;
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .jiathis_style .jiadiv_01 div:first-child {
+        display: none;
+    }
+    .jiathis_style .jiadiv_02 {
+        padding: 7px 0 !important;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle {
+        width: 85px;
+        border: none;
+        height: auto;
+        margin: 3px 10px;
+        padding: 6px 10px;
+        border-radius: 4px;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle:hover {
+        border: none;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle:nth-child(even) {
+        margin-left: 0;
+    }
+    .jiathis_style .jtico:hover {
+        opacity: 1;
+    }
+    .jiathis_style .ckepopBottom,
+    .jiathis_style .centerBottom {
+        width: auto !important;
+        padding: 5px;
+        background: #f7f7f7;
+    }
+</style>
+
+
+
+</div>
+
+            
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/MyBlog/2018/03/27/超轻量模板引擎/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    超轻量模板引擎
+                
+            </div>
+        </a>
+    
+    
+        <a href="/MyBlog/2017/08/08/MVVM的基础原理与实现/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">MVVM的基础原理与实现</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+        <section id="comments">
+	<div id="commentContainer"></div>
+</section>
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/MyBlog/2018/03/27/超轻量模板引擎/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/MyBlog/2018/03/27/超轻量模板引擎/" class="title">超轻量模板引擎</a></p>
+                            <p class="item-date"><time datetime="2018-03-27T14:59:16.000Z" itemprop="datePublished">2018-03-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/MyBlog/2017/09/07/SSR原理/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/MyBlog/2017/09/07/SSR原理/" class="title">SSR原理</a></p>
+                            <p class="item-date"><time datetime="2017-09-07T14:58:08.000Z" itemprop="datePublished">2017-09-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/MyBlog/2017/08/08/MVVM的基础原理与实现/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/MyBlog/2017/08/08/MVVM的基础原理与实现/" class="title">MVVM的基础原理与实现</a></p>
+                            <p class="item-date"><time datetime="2017-08-08T01:08:14.000Z" itemprop="datePublished">2017-08-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/MyBlog/2017/07/29/DOM备忘录/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/MyBlog/2017/07/29/DOM备忘录/" class="title">DOM备忘录</a></p>
+                            <p class="item-date"><time datetime="2017-07-29T08:09:53.000Z" itemprop="datePublished">2017-07-29</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/MyBlog/2017/07/23/Jenkins使用及部署/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/MyBlog/2017/07/23/Jenkins使用及部署/" class="title">Jenkins使用及部署</a></p>
+                            <p class="item-date"><time datetime="2017-07-23T03:48:43.000Z" itemprop="datePublished">2017-07-23</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/MyBlog/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/MyBlog/archives/2017/09/">九月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/MyBlog/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/MyBlog/archives/2017/07/">七月 2017</a><span class="archive-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    
+        
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2018 Calvin Lee<br>
+            <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>-->
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/MyBlog/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/MyBlog/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/MyBlog/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/MyBlog/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/MyBlog/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/MyBlog/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/MyBlog/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/MyBlog/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/MyBlog/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/MyBlog/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/MyBlog/js/main.js"></script>
+
+    </div>
+</body>
+</html>

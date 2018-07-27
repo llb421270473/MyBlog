@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Hexo部署总结 | CalvinLee</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="写程序有一段时间了，最近特别想写点什么，把自己的一些想法与经验分享给热爱写码子的你。 HexoHexo是基于Node的一个博客框架，采用Markdown语法书写内容，框架本身拥有较多的第三方插件和主题包。结合Github的Pages服务，部署一个自己的博客真的是很方便。 环境准备既然Hexo是基于Node的，那么Node肯定就少不了，其次需要使用到Git Node 安装 下载Node  既然说到了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo部署总结">
+<meta property="og:url" content="http://coderdog.duapp.com/2017/07/02/Hexo部署总结/index.html">
+<meta property="og:site_name" content="CalvinLee">
+<meta property="og:description" content="写程序有一段时间了，最近特别想写点什么，把自己的一些想法与经验分享给热爱写码子的你。 HexoHexo是基于Node的一个博客框架，采用Markdown语法书写内容，框架本身拥有较多的第三方插件和主题包。结合Github的Pages服务，部署一个自己的博客真的是很方便。 环境准备既然Hexo是基于Node的，那么Node肯定就少不了，其次需要使用到Git Node 安装 下载Node  既然说到了">
+<meta property="og:updated_time" content="2017-07-23T06:56:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo部署总结">
+<meta name="twitter:description" content="写程序有一段时间了，最近特别想写点什么，把自己的一些想法与经验分享给热爱写码子的你。 HexoHexo是基于Node的一个博客框架，采用Markdown语法书写内容，框架本身拥有较多的第三方插件和主题包。结合Github的Pages服务，部署一个自己的博客真的是很方便。 环境准备既然Hexo是基于Node的，那么Node肯定就少不了，其次需要使用到Git Node 安装 下载Node  既然说到了">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/MyBlog/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/MyBlog/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/MyBlog/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/MyBlog/css/style.css">
+
+    <script src="/MyBlog/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/MyBlog/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/MyBlog/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?56d1bd486ef71e9d4af8337b7ae3ee8d";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/MyBlog/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">CalvinLee</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/MyBlog/.">Home</a>
+                
+                    <a class="main-nav-link" href="/MyBlog/archives">Archives</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/MyBlog/css/images/avatar.jpg" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/MyBlog/',
+        CONTENT_URL: '/MyBlog/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/MyBlog/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/MyBlog/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/MyBlog/archives">Archives</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/MyBlog/css/images/avatar.jpg" />
+            <h2 id="name">Calvin Lee</h2>
+            <h3 id="title">Full-Stack Developer</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>ShangHai, China</span>
+            <a id="follow" target="_blank" href="https://github.com/llb421270473">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                6
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                0
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/llb421270473" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/DeveloperLee" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-Hexo部署总结" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Hexo部署总结
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/MyBlog/2017/07/02/Hexo部署总结/">
+            <time datetime="2017-07-02T15:44:03.000Z" itemprop="datePublished">2017-07-02</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>写程序有一段时间了，最近特别想写点什么，把自己的一些想法与经验分享给热爱写码子的你。</p>
+<h2 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h2><p>Hexo是基于Node的一个博客框架，采用Markdown语法书写内容，框架本身拥有较多的第三方插件和主题包。<br>结合Github的Pages服务，部署一个自己的博客真的是很方便。</p>
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>既然Hexo是基于Node的，那么Node肯定就少不了，其次需要使用到Git</p>
+<h3 id="Node-安装"><a href="#Node-安装" class="headerlink" title="Node 安装"></a>Node 安装</h3><ul>
+<li><a href="https://nodejs.org/en/download/" target="_blank" rel="external">下载Node</a></li>
+</ul>
+<p>既然说到了Node，那么必须说一下Node的包管理工具NPM，通过npm命令可以很方便的安装和使用第三方库，并且具有很好的依赖管理。</p>
+<p>NPM有个弱点，国人访问有点慢，此时推荐使用淘宝的NPM源<a href="https://npm.taobao.org/" target="_blank" rel="external">taonpm</a>来加速。</p>
+<h3 id="Git-安装"><a href="#Git-安装" class="headerlink" title="Git 安装"></a>Git 安装</h3><ul>
+<li><a href="https://git-scm.com/downloads" target="_blank" rel="external">下载Git</a></li>
+</ul>
+<h2 id="Hexo-安装"><a href="#Hexo-安装" class="headerlink" title="Hexo 安装"></a>Hexo 安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm i hexo -g</div></pre></td></tr></table></figure>
+<p>安装好以后，你就可以使用hexo命令来创建blog了。</p>
+<h2 id="Hexo-常用命令"><a href="#Hexo-常用命令" class="headerlink" title="Hexo 常用命令"></a>Hexo 常用命令</h2><p>init 创建一个博客项目<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> project-path</div><div class="line">hexo init</div></pre></td></tr></table></figure></p>
+<p>new 新建一片文章<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo new 我是Hello</div></pre></td></tr></table></figure></p>
+<p>clean 清理已生成的博客<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo clean</div><div class="line">简写</div><div class="line">hexo c</div></pre></td></tr></table></figure></p>
+<p>generate 生成博客<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo generate</div><div class="line">简写</div><div class="line">hexo g</div></pre></td></tr></table></figure></p>
+<p>deploy 部署博客<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo deploy</div><div class="line">简写</div><div class="line">hexo d</div></pre></td></tr></table></figure></p>
+<h2 id="Hexo-部署"><a href="#Hexo-部署" class="headerlink" title="Hexo 部署"></a>Hexo 部署</h2><p>写好了文章肯定是要分享给朋友们看的，那么这时就需要一个http服务器来部署我们的博客。</p>
+<p>推荐给大家一个常用的方法，<a href="https://pages.github.com/" target="_blank" rel="external">Github Pages</a> 它提供了一个Http服务，方便我们快速部署website。</p>
+<p>那么想用这个功能，前提就得有个Github账号，然后创建一个项目（记得把SSH Key提前设置到Github）。</p>
+<p>将新建的项目地址复制到博客项目根目录下的_config.yml里面</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="attr">deploy:</span></div><div class="line"><span class="attr">  type:</span> <span class="string">git</span></div><div class="line"><span class="attr">  repo:</span> <span class="string">git@github.com:llb421270473/MyBlog.git</span> <span class="string">//</span> <span class="string">自己的项目地址</span></div></pre></td></tr></table></figure>
+<h2 id="Hexo-百度BAE部署"><a href="#Hexo-百度BAE部署" class="headerlink" title="Hexo 百度BAE部署"></a>Hexo 百度BAE部署</h2><p>Github Pages服务的确方便而且免费，缺点是国内访问慢，绑定的域名需要备案，否则各大手机软件会弹警告。</p>
+<p>百度BAE的好处是速度快、稳定，最低0.1元/天，提供duapp的二级域名，从而免备案。</p>
+<p>登录<a href="https://cloud.baidu.com/" target="_blank" rel="external">百度云</a>，购买一个lighttpd-static的执行单元，代码版本工具选择git，内存大小根据需求自己选，几毛钱的差价而已。</p>
+<p>_config.yml 配置如下<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="attr">deploy:</span></div><div class="line"><span class="attr">  type:</span> <span class="string">git</span></div><div class="line"><span class="attr">  repo:</span> <span class="string">//</span> <span class="string">BAE自己的项目地址</span></div></pre></td></tr></table></figure></p>
+<p>在.deploy_git/.git/config文件中追加如下内容，从而避免git上传报出文件内容过大的错误<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[http]</div><div class="line">        postBuffer = 524288000</div></pre></td></tr></table></figure></p>
+<h2 id="配置域名"><a href="#配置域名" class="headerlink" title="配置域名"></a>配置域名</h2><p>现在注册域名就像淘宝购物这么简单，如果想给自己的博客分配个域名，那么这时Github Pages服务依旧可以帮助你。</p>
+<p>首先将自己的域名使用CNAME的形式解析到  <strong>自己的账号.github.io</strong> </p>
+<p>其次在项目根目录的source文件夹下创建一个名称为CNAME的文件</p>
+<p>在CNAME文件里写好你的域名（下面是我的博客域名）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">blog.coderdog.club</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>source文件夹可以用来存储每次生成博客时需要拷贝的文件</p>
+</blockquote>
+<h2 id="一键部署"><a href="#一键部署" class="headerlink" title="一键部署"></a>一键部署</h2><p>package.json的scripts可以存储一个命令执行过程，那么使用这个特性我们写个超级简单的脚本</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="string">"scripts"</span>: &#123;</div><div class="line">    <span class="string">"deploy"</span>: <span class="string">"hexo c &amp;&amp; hexo g &amp;&amp; hexo d"</span></div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>执行脚本就可以轻松部署了<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm run deploy</div></pre></td></tr></table></figure></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+    <div class="jiathis_style">
+    <span class="jiathis_txt">分享到：</span>
+    <a class="jiathis_button_qzone">QQ空间</a>
+    <a class="jiathis_button_tsina">新浪微博</a>
+    <a class="jiathis_button_tqq">腾讯微博</a>
+    <a class="jiathis_button_weixin">微信</a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+    <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<style>
+    .jiathis_style div:first-child:not(.jiadiv_01) {
+        width: auto !important;
+        border: none !important;
+    }
+    .jiathis_style .jiadiv_01 {
+        margin: 10px 0;
+        border-radius: 4px;
+        border: #e1e1e1 solid 1px;
+    }
+    .jiathis_style .jiadiv_01 div:first-child {
+        display: none;
+    }
+    .jiathis_style .jiadiv_02 {
+        padding: 7px 0 !important;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle {
+        width: 85px;
+        border: none;
+        height: auto;
+        margin: 3px 10px;
+        padding: 6px 10px;
+        border-radius: 4px;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle:hover {
+        border: none;
+    }
+    .jiathis_style .jiadiv_02 .jiatitle:nth-child(even) {
+        margin-left: 0;
+    }
+    .jiathis_style .jtico:hover {
+        opacity: 1;
+    }
+    .jiathis_style .ckepopBottom,
+    .jiathis_style .centerBottom {
+        width: auto !important;
+        padding: 5px;
+        background: #f7f7f7;
+    }
+</style>
+
+
+
+</div>
+
+            
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/MyBlog/2017/07/23/Jenkins使用及部署/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Jenkins使用及部署
+                
+            </div>
+        </a>
+    
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+        <section id="comments">
+	<div id="commentContainer"></div>
+</section>
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/MyBlog/2018/03/27/超轻量模板引擎/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/MyBlog/2018/03/27/超轻量模板引擎/" class="title">超轻量模板引擎</a></p>
+                            <p class="item-date"><time datetime="2018-03-27T14:59:16.000Z" itemprop="datePublished">2018-03-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/MyBlog/2017/09/07/SSR原理/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/MyBlog/2017/09/07/SSR原理/" class="title">SSR原理</a></p>
+                            <p class="item-date"><time datetime="2017-09-07T14:58:08.000Z" itemprop="datePublished">2017-09-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/MyBlog/2017/08/08/MVVM的基础原理与实现/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/MyBlog/2017/08/08/MVVM的基础原理与实现/" class="title">MVVM的基础原理与实现</a></p>
+                            <p class="item-date"><time datetime="2017-08-08T01:08:14.000Z" itemprop="datePublished">2017-08-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/MyBlog/2017/07/29/DOM备忘录/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/MyBlog/2017/07/29/DOM备忘录/" class="title">DOM备忘录</a></p>
+                            <p class="item-date"><time datetime="2017-07-29T08:09:53.000Z" itemprop="datePublished">2017-07-29</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/MyBlog/2017/07/23/Jenkins使用及部署/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/MyBlog/2017/07/23/Jenkins使用及部署/" class="title">Jenkins使用及部署</a></p>
+                            <p class="item-date"><time datetime="2017-07-23T03:48:43.000Z" itemprop="datePublished">2017-07-23</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/MyBlog/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/MyBlog/archives/2017/09/">九月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/MyBlog/archives/2017/08/">八月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/MyBlog/archives/2017/07/">七月 2017</a><span class="archive-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    
+        
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2018 Calvin Lee<br>
+            <!--Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>-->
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/MyBlog/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/MyBlog/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/MyBlog/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/MyBlog/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/MyBlog/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/MyBlog/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/MyBlog/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/MyBlog/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/MyBlog/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/MyBlog/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/MyBlog/js/main.js"></script>
+
+    </div>
+</body>
+</html>
