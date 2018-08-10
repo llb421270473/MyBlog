@@ -218,9 +218,7 @@ var _hmt = _hmt || [];
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>还在痛苦的手工拼接HTML？</p>
-<p>使用模板引擎渲染出目标HTMl，避免手工拼接的错误，同时增加模板代码的可读性。</p>
-<p>话不多说，先看代码，此demo实现了一个轻量的模板引擎。</p>
+            <p>不要用字符串拼接，不能被IDE格式化，其次可阅读性差。</p>
 <script async src="//jsrun.net/rWZKp/embed/all/light/"></script>
 
 <h2 id="模板引擎的核心"><a href="#模板引擎的核心" class="headerlink" title="模板引擎的核心"></a>模板引擎的核心</h2><p>正则表达式的单元匹配，以及replace函数。</p>
@@ -588,17 +586,43 @@ var _hmt = _hmt || [];
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h5 id="document-anchors"><a href="#document-anchors" class="headerlink" title="document.anchors"></a>document.anchors</h5><p>获取当前页面所有锚</p>
-<h5 id="document-forms"><a href="#document-forms" class="headerlink" title="document.forms"></a>document.forms</h5><p>获取当前页面所有表单</p>
-<h5 id="document-getElementById"><a href="#document-getElementById" class="headerlink" title="document.getElementById"></a>document.getElementById</h5><p>返回第一个匹配的元素</p>
-<h5 id="document-images"><a href="#document-images" class="headerlink" title="document.images"></a>document.images</h5><p>获取当前页面所有图片</p>
-<h5 id="event-keycode"><a href="#event-keycode" class="headerlink" title="event.keycode"></a>event.keycode</h5><p>对应键盘的按键code</p>
-<h5 id="event-button"><a href="#event-button" class="headerlink" title="event.button"></a>event.button</h5><p>鼠标点击的哪个按键，0=&gt;左键，1=&gt;中键，2=&gt;右键</p>
-<h5 id="event-clientX-clientY"><a href="#event-clientX-clientY" class="headerlink" title="event.clientX | clientY"></a>event.clientX | clientY</h5><p>事件发生的坐标</p>
-<h5 id="event-screenX-screenY"><a href="#event-screenX-screenY" class="headerlink" title="event.screenX | screenY"></a>event.screenX | screenY</h5><p>相对屏幕的X或Y的值</p>
-<h5 id="event-shiftKey"><a href="#event-shiftKey" class="headerlink" title="event.shiftKey"></a>event.shiftKey</h5><p>点击shift返回1，否则返回0</p>
-<h5 id="IE环境event-srcElement等于FireFox的event-target"><a href="#IE环境event-srcElement等于FireFox的event-target" class="headerlink" title="IE环境event.srcElement等于FireFox的event.target"></a>IE环境event.srcElement等于FireFox的event.target</h5><h5 id="nodeType"><a href="#nodeType" class="headerlink" title="nodeType"></a>nodeType</h5><p>1：元素；2：属性；3：文本；8：注释；9：文档</p>
-<h5 id="from"><a href="#from" class="headerlink" title="from"></a>from</h5><p>var f = document.getElementById(‘x’)</p>
+            <h1 id="DOM"><a href="#DOM" class="headerlink" title="DOM"></a>DOM</h1><h3 id="document"><a href="#document" class="headerlink" title="document"></a>document</h3><hr>
+<ul>
+<li><p>document.anchors<br>获取当前页面所有锚</p>
+</li>
+<li><p>document.forms<br>获取当前页面所有表单</p>
+</li>
+<li><p>document.getElementById<br>返回第一个匹配的元素</p>
+</li>
+<li><p>document.images<br>获取当前页面所有图片</p>
+</li>
+</ul>
+<h3 id="event"><a href="#event" class="headerlink" title="event"></a>event</h3><hr>
+<ul>
+<li><p>event.keycode<br>对应键盘的按键code</p>
+</li>
+<li><p>event.button<br>鼠标点击的哪个按键，0=&gt;左键，1=&gt;中键，2=&gt;右键</p>
+</li>
+<li><p>event.clientX | clientY<br>事件发生的坐标</p>
+</li>
+<li><p>event.screenX | screenY<br>相对屏幕的X或Y的值</p>
+</li>
+<li><p>event.shiftKey<br>点击shift返回1，否则返回0</p>
+</li>
+</ul>
+<blockquote>
+<p>IE环境event.srcElement等于FireFox的event.target</p>
+</blockquote>
+<h3 id="nodeType"><a href="#nodeType" class="headerlink" title="nodeType"></a>nodeType</h3><hr>
+<ul>
+<li>1：元素</li>
+<li>2：属性</li>
+<li>3：文本</li>
+<li>8：注释</li>
+<li>9：文档</li>
+</ul>
+<h3 id="form"><a href="#form" class="headerlink" title="form"></a>form</h3><hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">var f = document.getElementById(&apos;x&apos;)</div></pre></td></tr></table></figure>
 <ul>
 <li>f.action // 获取action的值</li>
 <li>f.action = ‘some action’ // 设置action的值</li>
@@ -607,16 +631,14 @@ var _hmt = _hmt || [];
 <li>f.elements // 获取此form对象下的所有input元素</li>
 <li>f.onsubmit = function(){ return false | true} // 返回false此表单不会提交</li>
 </ul>
-<h5 id="button"><a href="#button" class="headerlink" title="button"></a>button</h5><ul>
-<li>disable = true // 禁用</li>
-<li>disable = false | null // 启用</li>
-</ul>
-<h5 id="checkbox"><a href="#checkbox" class="headerlink" title="checkbox"></a>checkbox</h5><ul>
-<li>checked = true // 选中</li>
-<li>checked = false // 取消</li>
-</ul>
-<h5 id="选中文本内容"><a href="#选中文本内容" class="headerlink" title="选中文本内容"></a>选中文本内容</h5><p>var text = document.getElementById(‘x’)<br>text.select() // 选中文本域内容</p>
-<h5 id="下拉列表"><a href="#下拉列表" class="headerlink" title="下拉列表"></a>下拉列表</h5><p>var selectDom = document.getElementById(‘x’)</p>
+<h3 id="button"><a href="#button" class="headerlink" title="button"></a>button</h3><hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">disable = true // 禁用</div><div class="line">disable = false | null // 启用</div></pre></td></tr></table></figure>
+<h3 id="checkbox"><a href="#checkbox" class="headerlink" title="checkbox"></a>checkbox</h3><hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">checked = true // 选中</div><div class="line">checked = false // 取消</div></pre></td></tr></table></figure>
+<h3 id="选中文本内容"><a href="#选中文本内容" class="headerlink" title="选中文本内容"></a>选中文本内容</h3><hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var text = document.getElementById(&apos;x&apos;)</div><div class="line">text.select() // 选中文本域内容</div></pre></td></tr></table></figure>
+<h3 id="下拉列表"><a href="#下拉列表" class="headerlink" title="下拉列表"></a>下拉列表</h3><hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">var selectDom = document.getElementById(&apos;x&apos;)</div></pre></td></tr></table></figure>
 <ul>
 <li>selectDom.selectedIndex // 选中的索引</li>
 <li>selectDom.options // 列出options</li>
@@ -627,7 +649,8 @@ var _hmt = _hmt || [];
 <li>通过selectDom.remove(index)，移除对应的option</li>
 <li>选中options，设置属性selected=”selected”</li>
 </ul>
-<h5 id="Table"><a href="#Table" class="headerlink" title="Table"></a>Table</h5><p>var t = document.getElementById(‘x’)</p>
+<h3 id="Table"><a href="#Table" class="headerlink" title="Table"></a>Table</h3><hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">var t = document.getElementById(&apos;x&apos;)</div></pre></td></tr></table></figure>
 <ul>
 <li>cellpadding    单元边沿与其内容之间的空白</li>
 <li>cellspacing 规定单元格之间的空白</li>
@@ -637,7 +660,8 @@ var _hmt = _hmt || [];
 <li>insertRow(index)返回的row对象再执行，insertCell(index)返回cell对象</li>
 <li>td标签使用colspan用来指定单元格横向跨越的列数，rowspan用来指定单元格纵向跨越的行数</li>
 </ul>
-<h5 id="AccessKey元素快捷访问"><a href="#AccessKey元素快捷访问" class="headerlink" title="AccessKey元素快捷访问"></a>AccessKey元素快捷访问</h5><ul>
+<h3 id="AccessKey元素快捷访问"><a href="#AccessKey元素快捷访问" class="headerlink" title="AccessKey元素快捷访问"></a>AccessKey元素快捷访问</h3><hr>
+<ul>
 <li><p>windows</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">alt + key</div><div class="line">FireFox shift + alt + key</div></pre></td></tr></table></figure>
 </li>
@@ -645,7 +669,8 @@ var _hmt = _hmt || [];
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">control + option + key</div></pre></td></tr></table></figure>
 </li>
 </ul>
-<h5 id="frameset、frame、iframe"><a href="#frameset、frame、iframe" class="headerlink" title="frameset、frame、iframe"></a>frameset、frame、iframe</h5><ul>
+<h3 id="frameset、frame、iframe"><a href="#frameset、frame、iframe" class="headerlink" title="frameset、frame、iframe"></a>frameset、frame、iframe</h3><hr>
+<ul>
 <li>frameset设置rows=”30%，30%，30%”，每一行占屏幕百分比高度</li>
 <li>frameset设置cols=”30%，30%，30%”，每一行占屏幕百分比宽度</li>
 <li>frame不能脱离frameset使用，但是iframe可以脱离文档使用</li>
@@ -654,12 +679,14 @@ var _hmt = _hmt || [];
 <li>iframe单独使用时有无body标签都可以</li>
 <li>通过src属性来设置框架源</li>
 </ul>
-<h5 id="window"><a href="#window" class="headerlink" title="window"></a>window</h5><ul>
+<h3 id="window"><a href="#window" class="headerlink" title="window"></a>window</h3><hr>
+<ul>
 <li>window.top 顶层窗口，可使用window.top != window.self来判断当前窗口是否是顶层窗口</li>
 <li>window.open(URL,name,specs,replace) 打开窗口，name可填写target值</li>
 <li>window.screen.availWidth | availHeight 屏幕可用宽度或高度</li>
 </ul>
-<h5 id="navigator"><a href="#navigator" class="headerlink" title="navigator"></a>navigator</h5><ul>
+<h3 id="navigator"><a href="#navigator" class="headerlink" title="navigator"></a>navigator</h3><hr>
+<ul>
 <li>appCodeName    浏览器的代码名</li>
 <li>appName    浏览器的名称</li>
 <li>appVersion    浏览器的平台和版本信息</li>
@@ -667,7 +694,8 @@ var _hmt = _hmt || [];
 <li>platform    运行浏览器的操作系统平台</li>
 <li>userAgent    由客户机发送服务器的user-agent 头部的值</li>
 </ul>
-<h5 id="location"><a href="#location" class="headerlink" title="location"></a>location</h5><ul>
+<h3 id="location"><a href="#location" class="headerlink" title="location"></a>location</h3><hr>
+<ul>
 <li>hash    URL的锚部分</li>
 <li>host    URL的主机名和端口</li>
 <li>hostname    URL的主机名</li>
